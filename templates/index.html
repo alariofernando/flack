@@ -1,0 +1,23 @@
+{% from 'helpers/form.html' import displayField %}
+
+{% extends "layout.html" %}
+{% block title %}Room{% endblock %}
+{% block body %}
+        <div>
+            <ul id="chat">
+                {% for message in messages %}
+                <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <form id="form">
+                
+                {{ displayField(form.message, 'Message', id="message") }}
+
+                {{ form.submit(id='submit', value="Send!") }}
+
+                {{ form.csrf_token }}
+            </form>
+        </div>
+{% endblock %}
