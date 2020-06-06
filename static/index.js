@@ -8,11 +8,46 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Configure form
         document.querySelector("#form").onsubmit = function () {
-            const message = document.querySelector("#message").value;
-            socket.emit('message', message, username);
+            const message = this.querySelector("#message").value;
+            socket.emit('message', message, username, room);
             this.reset();
             return false;
         };
+
+        // Configure channel creation
+        document.querySelector('#create-channel').onclick = () => {
+            document.querySelector("#main-chat").style.display = "none";
+            document.querySelector("#chan-form").style.display = "block";
+            return false;
+        };
+
+        // Configure channel creation form
+        document.querySelector("#chan-form").onsubmit = function () {
+            const chanName = document.querySelector("#channel-name").value;
+            socket.emit("chan create", chanName);
+            document.querySelector("#main-chat").style.display = "block";
+            document.querySelector("#chan-form").style.display = "none";
+            document.querySelector("#channel-name").value = "";
+            return false;
+        }
+
+        // Configure rooms
+        document.querySelectorAll(".chat-room").forEach(data => {
+            data.onclick = () => {
+                let newRoom = data.innerHTML;
+                if (newRoom == room) {
+                    msg = `You're already at ${room}`;
+                    alert(msg);
+                } else {
+                    // Leave room and join NewRoom
+                    socket.emit('leave', username, room);
+                    room = newRoom;
+                    localStorage.setItem("room", room)
+                    document.querySelector("#chat").innerHTML = "";
+                    socket.emit('join', username, room);
+                }
+            }
+        });
 
     });
 
@@ -24,13 +59,79 @@ document.addEventListener('DOMContentLoaded', () => {
         username = prompt("Please enter your name", "Harry Potter");
         localStorage.setItem("username", username);
     }
+
+    // Set username in the page
+    document.querySelector("#user-field").innerHTML = "Username: " + username;
     
+    // Check for last room
+    let room = localStorage.getItem("room");
+
+    // Prompt for room if no last room in localStorage
+    if (room == null) {
+        room = "main";
+        localStorage.setItem("room", "main");
+        socket.emit('join', username, room);
+    } else {
+        localStorage.setItem("room", "main");
+        socket.emit('join', username, room);
+    }
+
+    document.querySelector("#room-field").innerHTML = "Room: " + room;
+
+
     // Function to add new messages
     socket.on('message', function(message) {
         const li = document.createElement('li');
-        li.innerHTML = message;
+        const small = document.createElement('small');
+        const br = document.createElement('br');
+        small.innerHTML = message['timestamp'];
+        li.innerHTML = message['message'];
+        li.append(br);
+        li.append(small);
         const chat = document.querySelector("#chat");
         chat.append(li);
     });
 
+    // Event to populate chat with already existing messages
+    socket.on('join', messages => {
+        messages.forEach( item => {
+            const li = document.createElement('li');
+            const small = document.createElement('small');
+            const br = document.createElement('br');
+            small.innerHTML = item['timestamp'];
+            li.innerHTML = item['message'];
+            li.append(br);
+            li.append(small);
+            document.querySelector('#chat').append(li);
+        });
+    });
+
+    // Event for listening to errors
+    socket.on('error', message => {
+        alert(message);
+    });
+
+    // Event to add new channel to the list on creation
+    socket.on('new chan', chanName => {
+        const li = document.createElement('li');
+        li.innerHTML = chanName;
+        li.classList.add("chat-room");
+        li.onclick = function () {
+            let newRoom = this.innerHTML;
+            if (newRoom == room) {
+                msg = `You're already at ${room}`;
+                alert(msg);
+            } else {
+                // Leave room and join NewRoom
+                socket.emit('leave', username, room);
+                room = newRoom;
+                localStorage.setItem("room", room)
+                document.querySelector("#chat").innerHTML = "";
+                document.querySelector("#room-field").innerHTML = "Room: " + room;
+                socket.emit('join', username, room);
+            }
+        }
+
+        document.querySelector('#room-list').append(li);
+    });
 });

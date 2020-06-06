@@ -3,21 +3,54 @@
 {% extends "layout.html" %}
 {% block title %}Room{% endblock %}
 {% block body %}
-        <div>
-            <ul id="chat">
-                {% for message in messages %}
-                <li>{{message}}</li>
+    <div id="main-chat" style="display: block;">
+        <div class="left-nav">
+            <button type="button" id="create-channel" class="btn btn-primary">
+                <span>Create channel!</span>
+            </button>
+            <ul id="room-list" class="nav flex-column">
+                {% for room in rooms %}
+                <li class="chat-room" class="nav-link chat-room"> {{ room }}</li>
                 {% endfor %}
             </ul>
         </div>
+        <div class="messages-part">
+            <div>
+                <ul id="chat">
+                </ul>
+            </div>
+            <div id="footer">
+                <div id="user-info">
+                    <span id="user-field"></span>
+                    <br>
+                    <span id="room-field"></span>
+                </div>
+                <form id="form" class="form-inline">
+            
+                    {{ displayField(form.message, 'Message', id="message", class="form-control", autocomplete="off") }}
+            
+                    {{ form.submit(id='submit', value="Send!", class="btn btn-primary") }}
+            
+                    {{ form.csrf_token }}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="chan-form" style="display: none;">
+        <h1>Channel creation</h1>
         <div>
-            <form id="form">
-                
-                {{ displayField(form.message, 'Message', id="message") }}
-
-                {{ form.submit(id='submit', value="Send!") }}
-
+            <form id="chan-form">
+        
+                {{ displayField(chan_form.name, 'Channel', id="channel-name", autocomplete="off") }}
+        
+                {{ chan_form.submit(id='submit', value="Create!") }}
+        
                 {{ form.csrf_token }}
             </form>
         </div>
+    </div>
+    <div>
+        <h2 id="username"></h2>
+        <h2 id="room"></h2>
+    </div>
 {% endblock %}

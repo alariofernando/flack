@@ -1,0 +1,57 @@
+:root {
+    font-size: 16px;
+}
+
+body {
+    color: black;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.left-nav {
+    position: fixed;
+    left: 0px;
+    width: 8rem;
+    height: 100vh;
+    border-right: 1px;
+    border-right-style: ridge;
+}
+
+.messages-part {
+    margin-left: 8rem;
+    margin-top: 0px;
+    height: 100%;
+    padding: 1rem;
+}
+
+.chat-room {
+    margin: 0.5rem;
+}
+
+#footer {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    bottom: 0px;
+    height: 5rem;
+    padding: 0.2rem;
+}
+
+#user-info {
+    margin-right: 0.5rem;
+    padding: 0.1rem;
+    background-color: rgb(245,245,245);
+}
+
+#submit {
+    position: fixed;
+    right: 4rem;
+    width: auto;
+    height: 4rem;
+}
+
+#message {
+    width: 30rem;
+}
+
