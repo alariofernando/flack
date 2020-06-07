@@ -9,7 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // Configure form
         document.querySelector("#form").onsubmit = function () {
             const message = this.querySelector("#message").value;
-            socket.emit('message', message, username, room);
+            const fileField = this.querySelector("#file");
+            if (fileField.files.length) {
+                const file = {"body":fileField.files[0], "name": fileField.files[0].name}
+                var data = { "message": message, "has_file": 1, "file": file};
+                console.log(file);
+            } else {
+                var data = { "message": message, "has_file": 0 };
+            }
+            socket.emit('message', data, username, room);
             this.reset();
             return false;
         };
@@ -84,8 +92,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const li = document.createElement('li');
         const small = document.createElement('small');
         const br = document.createElement('br');
+        console.log(message["return_file"]);
         small.innerHTML = message['timestamp'];
         li.innerHTML = message['message'];
+        if (message["return_file"] == 1) {
+            var aLink = document.createElement('a');
+            aLink.href = message["file_link"];
+            aLink.innerHTML = message["file_link"];
+            li.append(aLink);
+        }
         li.append(br);
         li.append(small);
         const chat = document.querySelector("#chat");
@@ -134,4 +149,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelector('#room-list').append(li);
     });
+
 });

@@ -9,3 +9,5 @@ I learned to use flask-WTF for protecting me against CSRF attacks, and how to us
 Project is now finished, just to add a personal touch and maybe some more styling!
 
 I intentionally not used jQuery, Ajax and Handlebars for this project.
+
+I will upload sent files to s3, and use URL to send it to the chat.

@@ -28,11 +28,14 @@
                 <form id="form" class="form-inline">
             
                     {{ displayField(form.message, 'Message', id="message", class="form-control", autocomplete="off") }}
-            
-                    {{ form.submit(id='submit', value="Send!", class="btn btn-primary") }}
+
+                    <input type="file" id="file">
+
+                    {{ form.submit(id='submit', value="Send!", class="btn btn-primary", form="form") }}
             
                     {{ form.csrf_token }}
                 </form>
+                
             </div>
         </div>
     </div>

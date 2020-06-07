@@ -45,8 +45,6 @@ body {
 }
 
 #submit {
-    position: fixed;
-    right: 4rem;
     width: auto;
     height: 4rem;
 }
