@@ -75,11 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Prompt for room if no last room in localStorage
     if (room == null) {
-        room = "main";
-        localStorage.setItem("room", "main");
+        room = "Main";
+        localStorage.setItem("room", room);
         socket.emit('join', username, room);
     } else {
-        localStorage.setItem("room", "main");
+        localStorage.setItem("room", room);
         socket.emit('join', username, room);
     }
 
