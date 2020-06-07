@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (fileField.files.length) {
                 const file = {"body":fileField.files[0], "name": fileField.files[0].name}
                 var data = { "message": message, "has_file": 1, "file": file};
-                console.log(file);
             } else {
                 var data = { "message": message, "has_file": 0 };
             }
@@ -92,13 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const li = document.createElement('li');
         const small = document.createElement('small');
         const br = document.createElement('br');
-        console.log(message["return_file"]);
         small.innerHTML = message['timestamp'];
         li.innerHTML = message['message'];
         if (message["return_file"] == 1) {
             var aLink = document.createElement('a');
             aLink.href = message["file_link"];
-            aLink.innerHTML = message["file_link"];
+            aLink.innerHTML = message["file_name"];
+            li.append(document.createElement('br'));
             li.append(aLink);
         }
         li.append(br);
@@ -115,6 +114,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const br = document.createElement('br');
             small.innerHTML = item['timestamp'];
             li.innerHTML = item['message'];
+            if (item["return_file"] == 1) {
+                var aLink = document.createElement('a');
+                aLink.href = item["file_link"];
+                aLink.innerHTML = item["file_name"];
+                li.append(document.createElement('br'));
+                li.append(aLink);
+            }
             li.append(br);
             li.append(small);
             document.querySelector('#chat').append(li);

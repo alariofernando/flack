@@ -36,6 +36,7 @@ def index():
 def createChannel(channel):
     if channel in data["channels"]:
         emit("error", message="Existing channel")
+
     else:
         data["channels"].append(channel)
         emit("new chan", channel, broadcast=True)
@@ -45,6 +46,7 @@ def handleMessage(msg, username, room):
     if msg["has_file"] == 1:
         secure_name = secure_filename(msg['file']['name'])
         fqfn = f"{UPLOAD_FOLDER}//{secure_name}"
+
         with open(fqfn, "w") as upload_file:
             print(msg["file"]["body"].decode('utf-8'))
             upload_file.write(msg["file"]["body"].decode('utf-8'))
@@ -52,41 +54,50 @@ def handleMessage(msg, username, room):
         s3_file = f"https://{S3_BUCKET}.s3.amazonaws.com/{secure_name}"
         os.remove(fqfn)
         message = {
-            "message":f"{username}: {msg['message']}",
+            "message":f"{username}: {msg['message']}\n",
             "file_link": s3_file,
+            "file_name": secure_name,
             "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
             "return_file": 1
             }
+
     else:
         message = {
-            "message":f"{username}: {msg['message']}",
+            "message":f"{username}: {msg['message']}\n",
             "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
             "return_file": 0
             }
+
     try:
         data["messages"][room]
+
     except KeyError:
         data["messages"][room] = []
+
     if len(data["messages"][room]) == 100:
         messages.pop(0)
+
     data["messages"][room].append(message)
     emit("message", message, room=room)
 
 
 @socketio.on('leave')
 def leave(username, room):
+
     message = {
-        "message":f"{username} has left the room",
+        "message":f"{username} has left the room\n",
         "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
         "return_file": 0
         }
     emit("message", message, room=room)
     leave_room(room)
 
+
 @socketio.on('join')
 def join(username, room):
+
     message = {
-        "message":f"{username} has just joined this room. Say hello to {username}!",
+        "message":f"{username} has just joined this room. Say hello to {username}!\n",
         "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
         "return_file": 0
     }
