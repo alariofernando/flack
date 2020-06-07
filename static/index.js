@@ -147,9 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 socket.emit('leave', username, room);
                 room = newRoom;
                 localStorage.setItem("room", room)
-                document.querySelector("#chat").innerHTML = "";
                 document.querySelector("#room-field").innerHTML = "Room: " + room;
                 socket.emit('join', username, room);
+                document.querySelector("#chat").innerHTML = "";
             }
         }
 

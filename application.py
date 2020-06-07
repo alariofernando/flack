@@ -85,7 +85,7 @@ def handleMessage(msg, username, room):
 def leave(username, room):
 
     message = {
-        "message":f"{username} has left the room\n",
+        "message":f"{username} has left the {room} room\n",
         "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
         "return_file": 0
         }
