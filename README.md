@@ -2,12 +2,12 @@
 
 Web Programming with Python and JavaScript
 
+### How to use it
 
-I learned to use flask-WTF for protecting me against CSRF attacks, and how to use flask Macros to minimize boilerplate code!
-
-
-Project is now finished, just to add a personal touch and maybe some more styling!
-
-I intentionally not used jQuery, Ajax and Handlebars for this project.
-
-I will upload sent files to s3, and use URL to send it to the chat.
+1. Install python 3.7+
+2. python -m venv venv
+3. Activate the virtual environment (./venv/Scripts/activate || ./venv/bin/activate)
+4. Install libraries (pip install -r requirements.txt)
+5. Set the SECRET e FLASK_APP variables
+6. Set the UPLOAD_FOLDER and S3_BUCKET 
+7. flask run !!
