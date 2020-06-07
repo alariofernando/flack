@@ -29,6 +29,7 @@
             
                     {{ displayField(form.message, 'Message', id="message", class="form-control", autocomplete="off") }}
 
+                    <label for="file" id="file-label"><img src="{{ url_for('static', filename='file-icon.png') }}" alt="Upload a file"></label>
                     <input type="file" id="file">
 
                     {{ form.submit(id='submit', value="Send!", class="btn btn-primary", form="form") }}

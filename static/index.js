@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             var aLink = document.createElement('a');
             aLink.href = message["file_link"];
             aLink.innerHTML = message["file_name"];
+            aLink.target = "_blank";
             li.append(document.createElement('br'));
             li.append(aLink);
         }
@@ -118,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 var aLink = document.createElement('a');
                 aLink.href = item["file_link"];
                 aLink.innerHTML = item["file_name"];
+                aLink.target = "_blank";
                 li.append(document.createElement('br'));
                 li.append(aLink);
             }
